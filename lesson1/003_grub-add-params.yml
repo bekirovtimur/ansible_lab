@@ -1,0 +1,25 @@
+---
+- hosts: all
+  tasks:  
+  - name: Set net.ifnames=0 to grub config, if not present
+    lineinfile:
+      state: present
+      dest: /etc/default/grub
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* net.ifnames)\"[^\"]+)(\".*)'
+      line: '\1 net.ifnames=0\2'
+    register: ifnames 
+  
+  - name: Set biosdevname=0 to grub config, if not present
+    lineinfile:
+      state: present
+      dest: /etc/default/grub
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* biosdevname)\"[^\"]+)(\".*)'
+      line: '\1 biosdevname=0\2'
+    register: biosdevname
+
+  - name: Make new grub config file if something changed
+    shell: grub2-mkconfig -o /boot/grub2/grub.cfg
+    when: ifnames.changed or biosdevname.changed
+...

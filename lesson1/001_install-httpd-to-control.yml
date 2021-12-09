@@ -1,0 +1,12 @@
+---
+- hosts: control
+  tasks:  
+  - name: Install httpd (Apache)
+    yum: pkg=httpd state=latest
+  - name: Enable httpd (Apache) and check httpd is running and run if not running
+    service: name=httpd enabled=yes state=started
+  - name: Send local index.html to node
+    copy: src=./webserv/index.html dest=/var/www/html/index.html owner=apache group=apache mode=0644
+  - name: Open port 80 for httpd
+    firewalld: port=80/tcp permanent=yes state=enabled
+...

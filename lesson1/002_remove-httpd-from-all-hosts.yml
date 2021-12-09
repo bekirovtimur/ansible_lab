@@ -1,0 +1,10 @@
+---
+- hosts: all
+  tasks:  
+  - name: Remove httpd (Apache)
+    yum: pkg=httpd state=absent
+  - name: Remove file index.html
+    ansible.builtin.file: path=/var/www/html/index.html state=absent
+  - name: Close port 80 for httpd
+    firewalld: port=80/tcp permanent=yes state=disabled
+...

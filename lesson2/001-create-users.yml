@@ -1,0 +1,16 @@
+---
+- name: create users listed in file
+  hosts: all
+  vars_files:
+    - vars/users
+  tasks: 
+  - name: create users 
+    user: 
+      name: "{{ item.key }}"
+      state: present
+      update_password: on_create
+      comment: "{{ item.key }}@example.com"
+      home: "/home/{{ item.key }}"
+      password: "{{ item.value.password }}"
+    with_dict: "{{ users }}"
+...

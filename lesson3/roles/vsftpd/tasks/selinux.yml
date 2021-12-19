@@ -1,0 +1,26 @@
+---
+- name: Check sebool ftpd_anon_write
+  shell: 
+    cmd: getsebool ftpd_anon_write | grep off
+  register: ftpd_anon_write
+  failed_when: false
+  changed_when: false
+
+- name: Set sebool ftpd_anon_write to on
+  shell: 
+    cmd: setsebool -P ftpd_anon_write=1
+  failed_when: false
+  when: ftpd_anon_write.rc == 0
+
+- name: Check security context of upload folder
+  shell: 
+    cmd: ls -dZ /var/ftp/pub/upload | grep "public_content_rw_t"
+  register: se_cont
+  failed_when: false
+  changed_when: false
+  
+- name: Set security context of upload folder
+  shell: 
+    cmd: chcon -t public_content_rw_t /var/ftp/pub/upload/
+  failed_when: false
+  when: se_cont.rc == 1

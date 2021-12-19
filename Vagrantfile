@@ -17,8 +17,8 @@ Vagrant.configure("2") do |config|
     config.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--audio", "none"]
     end
- 	v.memory = 4096
-	v.cpus = 2
+# 	v.memory = 4096
+#	v.cpus = 2
     end
   end
 

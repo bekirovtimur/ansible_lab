@@ -1,0 +1,18 @@
+{% for state in ftp_vars %}
+anonymous_enable={{ state.all_anon }}
+anon_root={{ state.anon_root }}
+anon_other_write_enable={{ state.all_anon }}
+local_enable={{ state.local_enable }}
+write_enable={{ state.write_enable }}
+local_umask={{ state.local_umask }}
+anon_umask={{ state.anon_umask }}
+anon_upload_enable={{ state.all_anon }}
+anon_mkdir_write_enable={{ state.all_anon }}
+dirmessage_enable={{ state.dirmessage_enable }}
+xferlog_enable={{ state.xferlog_enable }}
+connect_from_port_20={{ state.connect_from_port_20 }}
+xferlog_std_format={{ state.xferlog_std_format }}
+listen={{ state.listen }}
+pam_service_name={{ state.pam_service_name }}
+userlist_enable={{ state.userlist_enable }}
+{% endfor %}

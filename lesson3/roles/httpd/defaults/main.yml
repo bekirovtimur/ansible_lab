@@ -1,0 +1,7 @@
+---
+# defaults file for httpd
+apache_vars:
+  - apache2_service: httpd
+    http_port: 80
+    protocol: tcp
+    index_dest: /var/www/html/index.html

@@ -1,0 +1,6 @@
+---
+- name: install vsftpd
+  hosts: node2.example.com 
+
+  roles:
+    - role: vsftpd

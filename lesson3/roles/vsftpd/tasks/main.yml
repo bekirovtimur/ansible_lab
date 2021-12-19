@@ -1,0 +1,10 @@
+---
+# tasks file for vsftpd
+- name: Show message about role
+  debug:
+    msg: "This role tested only with CentOS Linux 8!"
+
+- name: Run task for CentOS 8
+  import_tasks: centos8.yml
+  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '8'
+...

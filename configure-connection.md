@@ -4,6 +4,7 @@ sshpass -p vagrant ssh vagrant@192.168.56.111 -o "StrictHostKeyChecking no"
 sshpass -p vagrant ssh vagrant@192.168.56.112 -o "StrictHostKeyChecking no"
 
 #For all nodes
+sudo -s
 useradd ansible
 echo password | passwd --stdin ansible
 echo "ansible ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ansible

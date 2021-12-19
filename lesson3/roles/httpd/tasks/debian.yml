@@ -1,0 +1,6 @@
+---
+# tasks file for httpd
+# WORK IN PROGRESS!!!
+- name: Show message about Debian family OS
+  debug:
+    msg: "Debian family OS is not yet supported. Work in progress"

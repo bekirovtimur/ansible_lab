@@ -1,0 +1,39 @@
+---
+- name: Install Apache
+  yum: pkg="{{ item.apache2_service }}" state=latest
+  with_items: "{{ apache_vars }}"
+
+- name: Disable Listen port in default config
+  lineinfile:
+    state: present
+    dest: /etc/httpd/conf/httpd.conf
+    backrefs: yes
+    regexp: '^Listen '
+    line: '#Listen 80'
+
+- name: Configuring Apache port
+  template:
+    src: custom.conf.j2
+    dest: /etc/httpd/conf.d/custom.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Open http port
+  register: port
+
+- name: Send index.html
+  copy: src=index.html dest="{{ item.index_dest }}" owner=apache group=apache mode=0644
+  with_items: "{{ apache_vars }}"
+
+- name: Enable and start Apache
+  service: name="{{ item.apache2_service }}" enabled=yes state=started
+  with_items: "{{ apache_vars }}"
+
+- name: Trigger httpd restart
+  debug:
+    msg: httpd service going to restart
+  changed_when: port.changed
+  notify: Restart httpd service
+  when: port.changed
+
+

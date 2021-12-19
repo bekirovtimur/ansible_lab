@@ -1,0 +1,24 @@
+---
+# handlers file for httpd
+- name: Disable Listen port in default config
+  lineinfile:
+    state: present
+    dest: /etc/httpd/conf/httpd.conf
+    backrefs: yes
+    regexp: '^Listen '
+    line: '#Listen 80'
+  notify: Open http port
+
+- name: Open http port
+  firewalld: 
+    port: "{{ item.http_port }}/{{ item.protocol }}"
+    permanent: yes
+    state: enabled
+  with_items: "{{ apache_vars }}"
+
+- name: Restart httpd service
+  service:
+    name: httpd
+    state: restarted
+
+...

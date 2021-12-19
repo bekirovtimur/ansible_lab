@@ -1,0 +1,42 @@
+---
+- name: Install vsftpd
+  yum: pkg="{{ item.ftp_service }}" state=latest
+  with_items: "{{ ftp_vars }}"
+
+- name: Enable and start vsftpd
+  service: name="{{ item.ftp_service }}" enabled=yes state=started
+  with_items: "{{ ftp_vars }}"
+
+- name: Create or check pub directory
+  file:
+    path: /var/ftp/pub
+    state: directory
+    mode: '0755'
+
+- name: Create upload directory
+  file:
+    path: /var/ftp/pub/upload
+    state: directory
+    owner: ftp
+    mode: '0755'
+
+- name: Configuring vsftpd
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+  notify: Restart vsftpd service
+
+- name: Open ftp ports
+  firewalld: 
+    port: 20-21/tcp
+    permanent: yes
+    state: enabled
+
+- name: Configure SELinux
+  import_tasks: selinux.yml
+  
+- name: Send test file
+  copy: 
+    src: testfile 
+    dest: /var/ftp/pub/testfile.text
+    mode: '0644'

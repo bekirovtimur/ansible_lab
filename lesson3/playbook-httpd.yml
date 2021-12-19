@@ -1,0 +1,6 @@
+---
+- name: install httpd
+  hosts: node1.example.com 
+
+  roles:
+    - role: httpd

@@ -1,0 +1,14 @@
+---
+# tasks file for httpd
+- name: Show message about role
+  debug:
+    msg: "This role works only with RedHat family OS"
+
+- name: Run task for RedHat fimily OS
+  import_tasks: redhat.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: Run task for Debian family OS
+  import_tasks: debian.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+...
